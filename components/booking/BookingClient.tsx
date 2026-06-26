@@ -13,25 +13,46 @@ type Props = {
 
 export default function BookingClient({ services }: Props) {
 
-  const [selectedServiceId, setSelectedServiceId] =
-    useState<string | null>(null);
-
   const [currentStep, setCurrentStep] =
   useState<BookingStep>("SERVICE");
 
-  return (
-    <div className="w-full max-w-md rounded-2xl border border-zinc-200 bg-white p-6 shadow-lg">
+    const [booking, setBooking] = useState({
+    serviceId: null as string | null,
+    employeeId: null as string | null,
+    date: null as string | null,
+    time: null as string | null,
+  });
 
-      <h1 className="mb-6 text-2xl font-bold">
+  function handleServiceSelect(serviceId: string) {
+  setBooking((prev) => ({
+    ...prev,
+    serviceId,
+  }));
+
+  setCurrentStep("EMPLOYEE");
+  }
+
+  return (
+    <div className="w-full max-w-lg rounded-2xl border border-zinc-700 bg-zinc-900 p-8 shadow-2xl">
+
+      <h1 className="mb-6 text-3xl font-bold text-white">
         Reserva tu cita
       </h1>
 
-      <ServiceSelector
-        services={services}
-        selectedServiceId={selectedServiceId}
-        onSelect={setSelectedServiceId}
-      />
+    <ServiceSelector
+      services={services}
+      selectedServiceId={booking.serviceId}
+      onSelect={handleServiceSelect}
+    />
 
+    <p className="w-full rounded-xl p-4 text-left">
+  Servicio seleccionado: {booking.serviceId ?? "Ninguno"}
+</p>
+
+<p className="text-sm text-zinc-500">
+  Paso actual: {currentStep}
+</p>
     </div>
   );
+  
 }
