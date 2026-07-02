@@ -4,6 +4,7 @@ import { useState } from "react";
 import type { Database } from "@/types/database.types";
 import ServiceSelector from "./ServiceSelector";
 import type { BookingStep } from "@/types/booking";
+import EmployeeSelector from "./EmployeeSelector";
 
 type Service = Database["public"]["Tables"]["services"]["Row"];
 
@@ -44,6 +45,19 @@ export default function BookingClient({ services }: Props) {
       selectedServiceId={booking.serviceId}
       onSelect={handleServiceSelect}
     />
+
+    {booking.serviceId && (
+      <EmployeeSelector
+        serviceId={booking.serviceId}
+        selectedEmployeeId={booking.employeeId}
+        onSelect={(employeeId) =>
+          setBooking((prev) => ({
+          ...prev,
+          employeeId,
+        }))
+      }
+    />
+)}
 
     <p className="w-full rounded-xl p-4 text-left">
   Servicio seleccionado: {booking.serviceId ?? "Ninguno"}
